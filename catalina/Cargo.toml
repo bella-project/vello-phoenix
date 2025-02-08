@@ -1,0 +1,58 @@
+[package]
+name = "catalina"
+version.workspace = true
+description = "A GPU compute-centric renderer."
+categories = ["rendering", "graphics"]
+keywords = ["2d", "vector-graphics"]
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+# There are no platform specific docs.
+default-target = "x86_64-unknown-linux-gnu"
+targets = []
+
+[features]
+default = ["wgpu"]
+# Enables GPU memory usage estimation. This performs additional computations
+# in order to estimate the minimum required allocations for buffers backing
+# bump-allocated GPU memory.
+# TODO: Turn this into a runtime option used at resolve time and remove the feature.
+bump_estimate = ["catalina_encoding/bump_estimate"]
+wgpu = ["dep:wgpu", "dep:catalina_shaders", "dep:futures-intrusive"]
+
+# Development only features
+
+# Enables debug features when using the "async" pipeline.
+# This is only intended for development of Vello itself.
+debug_layers = []
+# Enables an embedded wgpu-profiler profiler.
+# This is only intended for development of Vello itself.
+# It is currently known to not work - see https://github.com/linebender/vello/issues/678
+wgpu-profiler = ["dep:wgpu-profiler"]
+# Enables hot reloading of Vello shaders.
+# This is only intended for development of Vello itself.
+# In practise, this won't compile outside of the Vello repository.
+hot_reload = ["catalina_shaders/compile"]
+
+[lints]
+workspace = true
+
+[dependencies]
+catalina_encoding = { workspace = true }
+catalina_shaders = { workspace = true, optional = true }
+vune = { workspace = true }
+bytemuck = { workspace = true }
+skrifa = { workspace = true }
+peniko = { workspace = true }
+wgpu = { workspace = true, optional = true }
+log = { workspace = true }
+static_assertions = { workspace = true }
+futures-intrusive = { workspace = true, optional = true }
+wgpu-profiler = { workspace = true, optional = true }
+thiserror = { workspace = true }
+# TODO: Add feature for built-in bitmap emoji support?
+png = { version = "0.17.14" }

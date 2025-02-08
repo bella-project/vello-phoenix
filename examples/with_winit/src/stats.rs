@@ -4,10 +4,10 @@
 use scenes::SimpleText;
 use std::collections::VecDeque;
 #[cfg(feature = "wgpu-profiler")]
-use vello::kurbo::Line;
-use vello::kurbo::{Affine, PathEl, Rect, Stroke};
-use vello::peniko::{color::palette, Brush, Color, Fill};
-use vello::{low_level::BumpAllocators, AaConfig, Scene};
+use catalina::kurbo::Line;
+use catalina::kurbo::{Affine, PathEl, Rect, Stroke};
+use catalina::peniko::{color::palette, Brush, Color, Fill};
+use catalina::{low_level::BumpAllocators, AaConfig, Scene};
 
 #[cfg(all(feature = "wgpu-profiler", not(target_arch = "wasm32")))]
 use std::time::Duration;

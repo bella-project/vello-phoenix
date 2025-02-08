@@ -337,6 +337,60 @@ dependencies = [
 ]
 
 [[package]]
+name = "catalina"
+version = "0.4.0"
+dependencies = [
+ "bytemuck",
+ "catalina_encoding",
+ "catalina_shaders",
+ "futures-intrusive",
+ "log",
+ "peniko",
+ "png",
+ "skrifa",
+ "static_assertions",
+ "thiserror 2.0.11",
+ "vune",
+ "wgpu",
+ "wgpu-profiler",
+]
+
+[[package]]
+name = "catalina_encoding"
+version = "0.4.0"
+dependencies = [
+ "bytemuck",
+ "guillotiere",
+ "peniko",
+ "skrifa",
+ "smallvec",
+]
+
+[[package]]
+name = "catalina_shaders"
+version = "0.4.0"
+dependencies = [
+ "bytemuck",
+ "catalina_encoding",
+ "naga",
+ "thiserror 2.0.11",
+]
+
+[[package]]
+name = "catalina_tests"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "catalina",
+ "futures-intrusive",
+ "image",
+ "nv-flip",
+ "png",
+ "pollster",
+ "scenes",
+]
+
+[[package]]
 name = "cc"
 version = "1.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -983,13 +1037,13 @@ name = "headless"
 version = "0.0.0"
 dependencies = [
  "anyhow",
+ "catalina",
  "clap",
  "env_logger",
  "futures-intrusive",
  "png",
  "pollster",
  "scenes",
- "vello",
 ]
 
 [[package]]
@@ -2332,13 +2386,13 @@ version = "0.0.0"
 dependencies = [
  "anyhow",
  "bytemuck",
+ "catalina",
  "clap",
  "getrandom 0.3.1",
  "image",
  "rand",
  "roxmltree",
  "skrifa",
- "vello",
  "web-time",
 ]
 
@@ -2498,8 +2552,8 @@ name = "simple"
 version = "0.0.0"
 dependencies = [
  "anyhow",
+ "catalina",
  "pollster",
- "vello",
  "winit",
 ]
 
@@ -2507,9 +2561,9 @@ dependencies = [
 name = "simple_sdl2"
 version = "0.0.0"
 dependencies = [
+ "catalina",
  "pollster",
  "sdl2",
- "vello",
 ]
 
 [[package]]
@@ -2896,60 +2950,6 @@ name = "valuable"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba73ea9cf16a25df0c8caa16c51acb937d5712a8429db78a3ee29d5dcacd3a65"
-
-[[package]]
-name = "vello"
-version = "0.4.0"
-dependencies = [
- "bytemuck",
- "futures-intrusive",
- "log",
- "peniko",
- "png",
- "skrifa",
- "static_assertions",
- "thiserror 2.0.11",
- "vello_encoding",
- "vello_shaders",
- "vune",
- "wgpu",
- "wgpu-profiler",
-]
-
-[[package]]
-name = "vello_encoding"
-version = "0.4.0"
-dependencies = [
- "bytemuck",
- "guillotiere",
- "peniko",
- "skrifa",
- "smallvec",
-]
-
-[[package]]
-name = "vello_shaders"
-version = "0.4.0"
-dependencies = [
- "bytemuck",
- "naga",
- "thiserror 2.0.11",
- "vello_encoding",
-]
-
-[[package]]
-name = "vello_tests"
-version = "0.0.0"
-dependencies = [
- "anyhow",
- "futures-intrusive",
- "image",
- "nv-flip",
- "png",
- "pollster",
- "scenes",
- "vello",
-]
 
 [[package]]
 name = "version-compare"
@@ -3822,6 +3822,8 @@ version = "0.0.0"
 dependencies = [
  "android_logger",
  "anyhow",
+ "catalina",
+ "catalina_shaders",
  "clap",
  "console_error_panic_hook",
  "console_log",
@@ -3836,8 +3838,6 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "tracing_android_trace",
- "vello",
- "vello_shaders",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "web-sys",

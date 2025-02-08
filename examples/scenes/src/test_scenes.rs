@@ -1,8 +1,8 @@
-// Copyright 2022 the Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use crate::{ExampleScene, SceneConfig, SceneSet};
-use vello::{
+use catalina::{
     kurbo::{Affine, Cap},
     peniko::ImageQuality,
 };
@@ -97,12 +97,12 @@ mod impls {
     use kurbo::RoundedRect;
     use rand::Rng;
     use rand::{rngs::StdRng, SeedableRng};
-    use vello::kurbo::{
+    use catalina::kurbo::{
         Affine, BezPath, Cap, Circle, Ellipse, Join, PathEl, Point, Rect, Shape, Stroke, Vec2,
     };
-    use vello::peniko::color::{palette, AlphaColor, Lch};
-    use vello::peniko::*;
-    use vello::*;
+    use catalina::peniko::color::{palette, AlphaColor, Lch};
+    use catalina::peniko::*;
+    use catalina::*;
 
     const FLOWER_IMAGE: &[u8] = include_bytes!("../../assets/splash-flower.jpg");
 

@@ -1,10 +1,10 @@
 [workspace]
 resolver = "2"
 members = [
-    "vello",
-    "vello_encoding",
-    "vello_shaders",
-    "vello_tests",
+    "catalina",
+    "catalina_encoding",
+    "catalina_shaders",
+    "catalina_tests",
 
     "examples/headless",
     "examples/run_wasm",
@@ -15,12 +15,12 @@ members = [
 ]
 
 [workspace.package]
-# Vello version, also used by other packages which want to mimic Vello's version.
-# Right now those packages include vello_encoding and vello_shaders.
+# Catalina version, also used by other packages which want to mimic Catalina's version.
+# Right now those packages include catalina_encoding and catalina_shaders.
 #
 # NOTE: When bumping this, remember to also bump the aforementioned other packages'
 #       version in the dependencies section at the bottom of this file.
-#       Additionally, bump the Vello dependency version in the 'simple'
+#       Additionally, bump the Catalina dependency version in the 'simple'
 #       and `simple_sdl2` examples.
 version = "0.4.0"
 
@@ -80,9 +80,9 @@ clippy.wildcard_dependencies = "warn"
 # END LINEBENDER LINT SET
 
 [workspace.dependencies]
-vello = { version = "0.4.0", path = "vello" }
-vello_encoding = { version = "0.4.0", path = "vello_encoding" }
-vello_shaders = { version = "0.4.0", path = "vello_shaders" }
+catalina = { version = "0.4.0", path = "catalina" }
+catalina_encoding = { version = "0.4.0", path = "catalina_encoding" }
+catalina_shaders = { version = "0.4.0", path = "catalina_shaders" }
 vune = { version = "0.1.0", path = "vune" }
 bytemuck = { version = "1.21.0", features = ["derive"] }
 skrifa = "0.26.4"

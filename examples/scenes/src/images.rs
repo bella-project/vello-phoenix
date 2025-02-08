@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use vello::peniko::{Blob, Image, ImageFormat};
+use catalina::peniko::{Blob, Image, ImageFormat};
 
 /// Simple hack to support loading images for examples.
 #[derive(Default)]

@@ -1,4 +1,4 @@
-// Copyright 2022 the Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 //! Scenes
@@ -29,9 +29,9 @@ use std::path::PathBuf;
 pub use svg::{default_scene, scene_from_files};
 use test_scenes::test_scenes;
 
-use vello::kurbo::Vec2;
-use vello::peniko::{color, Color};
-use vello::Scene;
+use catalina::kurbo::Vec2;
+use catalina::peniko::{color, Color};
+use catalina::Scene;
 
 pub struct SceneParams<'a> {
     pub time: f64,

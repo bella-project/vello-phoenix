@@ -29,7 +29,7 @@ pub fn hot_reload(mut f: impl FnMut() -> Option<()> + Send + 'static) -> Result<
     )?;
 
     debouncer.watch(
-        vello_shaders::compile::shader_dir().as_path(),
+        catalina_shaders::compile::shader_dir().as_path(),
         // We currently don't support hot reloading the imports, so don't recurse into there
         RecursiveMode::NonRecursive,
     )?;
