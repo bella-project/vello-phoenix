@@ -219,11 +219,9 @@ impl CodeGen {
         let result = self.span_to_str(id.span);
 
         match full_name {
-            true => {
-                match self.full_names.get(&result) {
-                    Some(r) => r.replace("::", "_"),
-                    None => result,
-                }
+            true => match self.full_names.get(&result) {
+                Some(r) => r.replace("::", "_"),
+                None => result,
             },
             false => result,
         }
