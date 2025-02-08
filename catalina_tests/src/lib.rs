@@ -35,7 +35,6 @@ use std::path::Path;
 use std::sync::Arc;
 
 use anyhow::{anyhow, bail, Result};
-use scenes::{ExampleScene, ImageCache, SceneParams, SimpleText};
 use catalina::kurbo::{Affine, Vec2};
 use catalina::peniko::{color::palette, Blob, Color, Image, ImageFormat};
 use catalina::wgpu::{
@@ -43,6 +42,7 @@ use catalina::wgpu::{
     TextureDescriptor, TextureFormat, TextureUsages,
 };
 use catalina::{util::block_on_wgpu, util::RenderContext, AaConfig, RendererOptions, Scene};
+use scenes::{ExampleScene, ImageCache, SceneParams, SimpleText};
 
 mod compare;
 mod snapshot;

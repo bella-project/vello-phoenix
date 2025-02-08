@@ -4,13 +4,13 @@
 //! Simple example.
 
 use anyhow::Result;
-use std::num::NonZeroUsize;
-use std::sync::Arc;
 use catalina::kurbo::{Affine, Circle, Ellipse, Line, RoundedRect, Stroke};
 use catalina::peniko::color::palette;
 use catalina::peniko::Color;
 use catalina::util::{RenderContext, RenderSurface};
 use catalina::{AaConfig, Renderer, RendererOptions, Scene};
+use std::num::NonZeroUsize;
+use std::sync::Arc;
 use winit::application::ApplicationHandler;
 use winit::dpi::LogicalSize;
 use winit::event::WindowEvent;

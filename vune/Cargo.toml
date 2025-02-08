@@ -1,7 +1,14 @@
 [package]
 name = "vune"
-version = "0.1.0"
-edition = "2021"
+description = "The Vune Shading Language"
+categories = ["rendering", "graphics"]
+keywords = ["2d", "vector-graphics"]
+readme = "README.md"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
 
 [dependencies]
 rune = { git = "https://github.com/TheNachoBIT/rune", branch = "optional-static-typing" }

@@ -5,6 +5,7 @@ members = [
     "catalina_encoding",
     "catalina_shaders",
     "catalina_tests",
+    "vune",
 
     "examples/headless",
     "examples/run_wasm",
@@ -83,7 +84,7 @@ clippy.wildcard_dependencies = "warn"
 catalina = { version = "0.4.0", path = "catalina" }
 catalina_encoding = { version = "0.4.0", path = "catalina_encoding" }
 catalina_shaders = { version = "0.4.0", path = "catalina_shaders" }
-vune = { version = "0.1.0", path = "vune" }
+vune = { version = "0.4.0", path = "vune" }
 bytemuck = { version = "1.21.0", features = ["derive"] }
 skrifa = "0.26.4"
 # The version of kurbo used below should be kept in sync

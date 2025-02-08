@@ -3,8 +3,8 @@
 
 //! Utility types
 
-use std::ops::Mul;
 use catalina_encoding::ConfigUniform;
+use std::ops::Mul;
 
 #[derive(Clone, Copy, Default, Debug, PartialEq)]
 #[repr(C)]

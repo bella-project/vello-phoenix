@@ -97,18 +97,18 @@ impl WgpuVune {
     }
 }
 
-pub mod WgpuVuneBindings {
+pub mod wgpu_vune_bindings {
     use crate::BindType;
 
     pub fn flatten(add_custom: Vec<BindType>) -> Vec<BindType> {
         let mut base: Vec<BindType> = Vec::new();
 
         base.extend_from_slice(&[
-            BindType::Uniform, 
-            BindType::BufReadOnly, 
-            BindType::BufReadOnly, 
-            BindType::Buffer, 
-            BindType::Buffer, 
+            BindType::Uniform,
+            BindType::BufReadOnly,
+            BindType::BufReadOnly,
+            BindType::Buffer,
+            BindType::Buffer,
             BindType::Buffer,
         ]);
 
@@ -129,7 +129,9 @@ pub enum WgpuVuneData {
 impl WgpuVuneData {
     pub fn send_to_gpu(&self, recording: &mut Recording) -> ResourceProxy {
         match self {
-            WgpuVuneData::Uniform(v) => ResourceProxy::Buffer(recording.upload_uniform("catalina.custom_uniform", &v[..])),
+            Self::Uniform(v) => {
+                ResourceProxy::Buffer(recording.upload_uniform("catalina.custom_uniform", &v[..]))
+            }
             _ => todo!(),
         }
     }
@@ -159,7 +161,8 @@ pub(crate) fn render_encoding_full(
     params: &RenderParams,
 ) -> (Recording, ResourceProxy) {
     let mut render = Render::new();
-    let mut recording = render.render_encoding_coarse(encoding, resolver, shaders, flatten, params, false);
+    let mut recording =
+        render.render_encoding_coarse(encoding, resolver, shaders, flatten, params, false);
     let out_image = render.out_image();
     render.record_fine(shaders, &mut recording);
     (recording, out_image.into())
@@ -252,14 +255,18 @@ impl Render {
             buffer_sizes.bin_data.size_in_bytes() as u64,
             "catalina.info_bin_data_buf",
         );
-        let tile_buf =
-            ResourceProxy::new_buf(buffer_sizes.tiles.size_in_bytes().into(), "catalina.tile_buf");
+        let tile_buf = ResourceProxy::new_buf(
+            buffer_sizes.tiles.size_in_bytes().into(),
+            "catalina.tile_buf",
+        );
         let segments_buf = ResourceProxy::new_buf(
             buffer_sizes.segments.size_in_bytes().into(),
             "catalina.segments_buf",
         );
-        let ptcl_buf =
-            ResourceProxy::new_buf(buffer_sizes.ptcl.size_in_bytes().into(), "catalina.ptcl_buf");
+        let ptcl_buf = ResourceProxy::new_buf(
+            buffer_sizes.ptcl.size_in_bytes().into(),
+            "catalina.ptcl_buf",
+        );
         let reduced_buf = ResourceProxy::new_buf(
             buffer_sizes.path_reduced.size_in_bytes().into(),
             "catalina.reduced_buf",
@@ -330,8 +337,10 @@ impl Render {
         );
         recording.clear_all(bump_buf);
         let bump_buf = ResourceProxy::Buffer(bump_buf);
-        let lines_buf =
-            ResourceProxy::new_buf(buffer_sizes.lines.size_in_bytes().into(), "catalina.lines_buf");
+        let lines_buf = ResourceProxy::new_buf(
+            buffer_sizes.lines.size_in_bytes().into(),
+            "catalina.lines_buf",
+        );
 
         let mut flatten_vec: Vec<ResourceProxy> = Vec::new();
         flatten_vec.extend_from_slice(&[
@@ -348,7 +357,7 @@ impl Render {
                 if matches!(i, WgpuVuneData::Empty) {
                     continue;
                 }
-    
+
                 flatten_vec.push(i.send_to_gpu(&mut recording));
             }
         }
@@ -455,8 +464,10 @@ impl Render {
         recording.free_resource(clip_bbox_buf);
         // Note: this only needs to be rounded up because of the workaround to store the tile_offset
         // in storage rather than workgroup memory.
-        let path_buf =
-            ResourceProxy::new_buf(buffer_sizes.paths.size_in_bytes().into(), "catalina.path_buf");
+        let path_buf = ResourceProxy::new_buf(
+            buffer_sizes.paths.size_in_bytes().into(),
+            "catalina.path_buf",
+        );
         recording.dispatch(
             shaders.tile_alloc,
             wg_counts.tile_alloc,

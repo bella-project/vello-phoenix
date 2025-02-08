@@ -15,8 +15,6 @@ use crate::{
     Error, RendererOptions,
 };
 
-pub use vune::VuneShader;
-
 // Shaders for the full pipeline
 pub struct FullShaders {
     pub pathtag_reduce: ShaderId,

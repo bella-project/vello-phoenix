@@ -1,6 +1,6 @@
 [package]
 name = "catalina_tests"
-description = "Integration tests for Vello."
+description = "Integration tests for Catalina."
 categories = ["rendering", "graphics"]
 keywords = ["2d", "vector-graphics"]
 edition.workspace = true

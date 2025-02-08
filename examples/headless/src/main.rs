@@ -16,8 +16,6 @@ use std::num::NonZeroUsize;
 use std::path::{Path, PathBuf};
 
 use anyhow::{anyhow, bail, Context, Result};
-use clap::Parser;
-use scenes::{ImageCache, SceneParams, SceneSet, SimpleText};
 use catalina::kurbo::{Affine, Vec2};
 use catalina::peniko::color::palette;
 use catalina::util::RenderContext;
@@ -26,6 +24,8 @@ use catalina::wgpu::{
     TextureDescriptor, TextureFormat, TextureUsages,
 };
 use catalina::{util::block_on_wgpu, RendererOptions, Scene};
+use clap::Parser;
+use scenes::{ImageCache, SceneParams, SceneSet, SimpleText};
 
 fn main() -> Result<()> {
     #[cfg(not(target_arch = "wasm32"))]

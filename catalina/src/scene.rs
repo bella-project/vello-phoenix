@@ -5,6 +5,9 @@ mod bitmap;
 
 use std::sync::Arc;
 
+#[cfg(feature = "bump_estimate")]
+use catalina_encoding::BumpAllocatorMemory;
+use catalina_encoding::{Encoding, Glyph, GlyphRun, NormalizedCoord, Patch, Transform};
 use peniko::{
     color::{palette, AlphaColor, DynamicColor, Srgb},
     kurbo::{Affine, BezPath, Point, Rect, Shape, Stroke, Vec2},
@@ -20,11 +23,7 @@ use skrifa::{
     raw::{tables::cpal::Cpal, TableProvider},
     GlyphId, MetadataProvider, OutlineGlyphCollection,
 };
-#[cfg(feature = "bump_estimate")]
-use catalina_encoding::BumpAllocatorMemory;
-use catalina_encoding::{Encoding, Glyph, GlyphRun, NormalizedCoord, Patch, Transform};
 
-use crate::ShaderId;
 use crate::render::WgpuVune;
 
 // TODO - Document invariants and edge cases (#470)

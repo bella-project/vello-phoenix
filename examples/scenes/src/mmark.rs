@@ -11,11 +11,13 @@
 
 use std::cmp::Ordering;
 
-use rand::seq::IndexedRandom;
-use rand::Rng;
-use catalina::kurbo::{Affine, BezPath, CubicBez, Line, ParamCurve, PathSeg, Point, QuadBez, Stroke};
+use catalina::kurbo::{
+    Affine, BezPath, CubicBez, Line, ParamCurve, PathSeg, Point, QuadBez, Stroke,
+};
 use catalina::peniko::Color;
 use catalina::Scene;
+use rand::seq::IndexedRandom;
+use rand::Rng;
 
 use crate::{SceneParams, TestScene};
 

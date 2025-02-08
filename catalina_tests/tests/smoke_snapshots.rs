@@ -3,13 +3,13 @@
 
 //! Tests to validate our snapshot testing ability
 
-use scenes::SimpleText;
 use catalina::{
     kurbo::{Affine, Circle, Rect},
     peniko::{color::palette, Brush, Fill},
     Scene,
 };
 use catalina_tests::{smoke_snapshot_test_sync, TestParams};
+use scenes::SimpleText;
 
 fn filled_square(use_cpu: bool) {
     let mut scene = Scene::new();

@@ -16,13 +16,8 @@ use wgpu::{
 
 use crate::{
     low_level::{BufferProxy, Command, ImageProxy, Recording, ResourceId, ResourceProxy, ShaderId},
-    recording::{BindType, ImageFormat},
-    Error, RendererOptions, Result,
-};
-
-use catalina_shaders::BindType::{
-    BufReadOnly,
-    Uniform,
+    recording::BindType,
+    Error, Result,
 };
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -92,7 +87,7 @@ impl Shader {
 }
 
 pub enum ExternalResource<'a> {
-    #[expect(unused, reason = "No buffers are accepted as arguments currently")]
+    //#[expect(unused, reason = "No buffers are accepted as arguments currently")]
     Buffer(BufferProxy, &'a Buffer),
     Image(ImageProxy, &'a TextureView),
 }
@@ -247,7 +242,7 @@ impl WgpuEngine {
             "catalina.flatten",
             Cow::Owned(shader.content()),
             layout,
-            CpuShaderType::Missing
+            CpuShaderType::Missing,
         )
     }
 

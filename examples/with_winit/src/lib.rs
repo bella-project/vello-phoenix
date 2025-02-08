@@ -17,9 +17,9 @@ use std::collections::HashSet;
 use std::num::NonZeroUsize;
 use std::sync::Arc;
 
+use catalina::low_level::DebugLayers;
 #[cfg(not(target_arch = "wasm32"))]
 use std::time::Instant;
-use catalina::low_level::DebugLayers;
 #[cfg(target_arch = "wasm32")]
 use web_time::Instant;
 use winit::application::ApplicationHandler;
@@ -31,12 +31,12 @@ use std::time::Duration;
 #[cfg(all(feature = "wgpu-profiler", target_arch = "wasm32"))]
 use web_time::Duration;
 
-use clap::Parser;
-use scenes::{ExampleScene, ImageCache, SceneParams, SceneSet, SimpleText};
 use catalina::kurbo::{Affine, Vec2};
 use catalina::peniko::{color::palette, Color};
 use catalina::util::{RenderContext, RenderSurface};
 use catalina::{low_level::BumpAllocators, AaConfig, Renderer, RendererOptions, Scene};
+use clap::Parser;
+use scenes::{ExampleScene, ImageCache, SceneParams, SceneSet, SimpleText};
 
 use winit::dpi::LogicalSize;
 use winit::event_loop::EventLoop;

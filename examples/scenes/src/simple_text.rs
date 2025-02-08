@@ -3,13 +3,13 @@
 
 use std::sync::Arc;
 
+use catalina::kurbo::Affine;
+use catalina::peniko::{color::palette, Blob, Brush, BrushRef, Fill, Font, StyleRef};
+use catalina::{Glyph, Scene};
 use skrifa::{
     raw::{FileRef, FontRef},
     MetadataProvider,
 };
-use catalina::kurbo::Affine;
-use catalina::peniko::{color::palette, Blob, Brush, BrushRef, Fill, Font, StyleRef};
-use catalina::{Glyph, Scene};
 
 // This is very much a hack to get things working.
 // On Windows, can set this to "c:\\Windows\\Fonts\\seguiemj.ttf" to get color emoji

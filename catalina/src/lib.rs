@@ -145,8 +145,8 @@ pub use peniko::kurbo;
 #[cfg(feature = "wgpu")]
 pub use wgpu;
 
-pub use scene::{DrawGlyphs, Scene};
 pub use catalina_encoding::{Glyph, NormalizedCoord};
+pub use scene::{DrawGlyphs, Scene};
 
 pub use vune;
 
@@ -159,9 +159,9 @@ use low_level::{
 use thiserror::Error;
 
 #[cfg(feature = "wgpu")]
-use debug::DebugLayers;
-#[cfg(feature = "wgpu")]
 use catalina_encoding::Resolver;
+#[cfg(feature = "wgpu")]
+use debug::DebugLayers;
 #[cfg(feature = "wgpu")]
 use wgpu_engine::{ExternalResource, WgpuEngine};
 
@@ -461,10 +461,21 @@ impl Renderer {
         &mut self.engine
     }
 
-    pub fn add_vune_shader(&mut self, name: &str, path: &str, device: &Device, layout: &[BindType]) {
-        let shader = self.engine_mut().add_vune_shader(device, vune::VuneShader::new_main_from_file(&path), layout);
+    pub fn add_vune_shader(
+        &mut self,
+        name: &str,
+        path: &str,
+        device: &Device,
+        layout: &[BindType],
+    ) {
+        let shader = self.engine_mut().add_vune_shader(
+            device,
+            vune::VuneShader::new_main_from_file(path),
+            layout,
+        );
 
-        self.vune_shaders.insert(name.to_string(), (path.to_string(), shader));
+        self.vune_shaders
+            .insert(name.to_string(), (path.to_string(), shader));
     }
 
     pub fn get_vune_shader(&mut self, name: &str) -> ShaderId {
@@ -484,8 +495,13 @@ impl Renderer {
         texture: &TextureView,
         params: &RenderParams,
     ) -> Result<()> {
-        let (recording, target) =
-            render::render_full(scene, &mut self.resolver, &self.shaders, &scene.flatten_shader, params);
+        let (recording, target) = render::render_full(
+            scene,
+            &mut self.resolver,
+            &self.shaders,
+            &scene.flatten_shader,
+            params,
+        );
         let external_resources = [ExternalResource::Image(
             *target.as_image().unwrap(),
             texture,

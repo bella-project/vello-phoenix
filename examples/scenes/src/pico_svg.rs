@@ -5,11 +5,11 @@
 
 use std::str::FromStr;
 
-use roxmltree::{Document, Node};
 use catalina::{
     kurbo::{Affine, BezPath, Point, Size, Vec2},
     peniko::color::{self, palette, AlphaColor, DynamicColor, Srgb},
 };
+use roxmltree::{Document, Node};
 
 pub struct PicoSvg {
     pub items: Vec<Item>,

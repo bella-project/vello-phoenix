@@ -11,9 +11,9 @@
     clippy::allow_attributes_without_reason
 )]
 
-use scenes::SimpleText;
 use catalina::{kurbo::Affine, peniko::Fill, Scene};
 use catalina_tests::{snapshot_test_sync, TestParams};
+use scenes::SimpleText;
 
 fn encode_noto_colr(text: &str, font_size: f32) -> Scene {
     let mut scene = Scene::new();

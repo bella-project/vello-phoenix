@@ -3,8 +3,8 @@
 
 //! Snapshot tests using the test scenes from [`scenes`].
 
-use scenes::{test_scenes, ExampleScene};
 use catalina_tests::{encode_test_scene, snapshot_test_sync, TestParams};
+use scenes::{test_scenes, ExampleScene};
 
 /// Make sure the CPU and GPU renderers match on the test scenes
 fn snapshot_test_scene(test_scene: ExampleScene, mut params: TestParams) {

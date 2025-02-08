@@ -94,15 +94,15 @@ mod impls {
     use std::sync::Arc;
 
     use crate::SceneParams;
-    use kurbo::RoundedRect;
-    use rand::Rng;
-    use rand::{rngs::StdRng, SeedableRng};
     use catalina::kurbo::{
         Affine, BezPath, Cap, Circle, Ellipse, Join, PathEl, Point, Rect, Shape, Stroke, Vec2,
     };
     use catalina::peniko::color::{palette, AlphaColor, Lch};
     use catalina::peniko::*;
     use catalina::*;
+    use kurbo::RoundedRect;
+    use rand::Rng;
+    use rand::{rngs::StdRng, SeedableRng};
 
     const FLOWER_IMAGE: &[u8] = include_bytes!("../../assets/splash-flower.jpg");
 

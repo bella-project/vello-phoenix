@@ -8,12 +8,12 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use image::{DynamicImage, ImageError};
-use nv_flip::FlipPool;
 use catalina::{
     peniko::{Image, ImageFormat},
     Scene,
 };
+use image::{DynamicImage, ImageError};
+use nv_flip::FlipPool;
 
 use crate::{env_var_relates_to, render_then_debug, write_png_to_file, TestParams};
 use anyhow::{anyhow, bail, Result};

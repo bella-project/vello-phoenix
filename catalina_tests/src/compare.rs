@@ -7,12 +7,12 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use image::DynamicImage;
-use nv_flip::FlipPool;
 use catalina::{
     peniko::{Image, ImageFormat},
     Scene,
 };
+use image::DynamicImage;
+use nv_flip::FlipPool;
 
 use crate::{render_then_debug, write_png_to_file, TestParams};
 

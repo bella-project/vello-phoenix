@@ -12,8 +12,8 @@ use crate::{
 
 use {
     bytemuck::{offset_of, Pod, Zeroable},
-    peniko::color::{palette, OpaqueColor, Srgb},
     catalina_encoding::{BumpAllocators, LineSoup, PathBbox},
+    peniko::color::{palette, OpaqueColor, Srgb},
 };
 pub(crate) struct DebugRenderer {
     // `clear_tint` slightly darkens the output from the catalina renderer to make the debug overlays
