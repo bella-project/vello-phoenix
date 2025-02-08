@@ -224,7 +224,7 @@ impl CodeGen {
                     Some(r) => r.replace("::", "_"),
                     None => result,
                 }
-            }
+            },
             false => result,
         }
     }
