@@ -1,11 +1,11 @@
-// Copyright 2023 the Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use vello::peniko::{Blob, Image, ImageFormat};
+use catalina::peniko::{Blob, Image, ImageFormat};
 
 /// Simple hack to support loading images for examples.
 #[derive(Default)]

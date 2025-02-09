@@ -1,4 +1,4 @@
-// Copyright 2024 the Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 //! Vello can also be used with non-Winit crates which provide a `RawWindowHandle`.
@@ -13,13 +13,13 @@ use sdl2::keyboard::Keycode;
 
 use std::num::NonZeroUsize;
 
-use vello::kurbo::{Affine, Circle, Ellipse, Line, RoundedRect, Stroke};
-use vello::peniko::color::palette;
-use vello::peniko::Color;
-use vello::util::{RenderContext, RenderSurface};
-use vello::{AaConfig, Renderer, RendererOptions, Scene};
+use catalina::kurbo::{Affine, Circle, Ellipse, Line, RoundedRect, Stroke};
+use catalina::peniko::color::palette;
+use catalina::peniko::Color;
+use catalina::util::{RenderContext, RenderSurface};
+use catalina::{AaConfig, Renderer, RendererOptions, Scene};
 
-use vello::wgpu;
+use catalina::wgpu;
 
 fn main() {
     let sdl_context = sdl2::init().unwrap();
@@ -80,7 +80,7 @@ fn main() {
                 &device_handle.queue,
                 &scene,
                 &surface_texture,
-                &vello::RenderParams {
+                &catalina::RenderParams {
                     base_color: palette::css::BLACK, // Background color
                     width,
                     height,
@@ -111,7 +111,7 @@ fn create_vello_renderer(render_cx: &RenderContext, surface: &RenderSurface<'_>)
         RendererOptions {
             surface_format: Some(surface.format),
             use_cpu: false,
-            antialiasing_support: vello::AaSupport::all(),
+            antialiasing_support: catalina::AaSupport::all(),
             num_init_threads: NonZeroUsize::new(1),
         },
     )
@@ -129,7 +129,7 @@ fn add_shapes_to_scene(scene: &mut Scene) {
     let circle = Circle::new((420.0, 200.0), 120.0);
     let circle_fill_color = Color::new([0.9529, 0.5451, 0.6588, 1.]);
     scene.fill(
-        vello::peniko::Fill::NonZero,
+        catalina::peniko::Fill::NonZero,
         Affine::IDENTITY,
         circle_fill_color,
         None,
@@ -140,7 +140,7 @@ fn add_shapes_to_scene(scene: &mut Scene) {
     let ellipse = Ellipse::new((250.0, 420.0), (100.0, 160.0), -90.0);
     let ellipse_fill_color = Color::new([0.7961, 0.651, 0.9686, 1.]);
     scene.fill(
-        vello::peniko::Fill::NonZero,
+        catalina::peniko::Fill::NonZero,
         Affine::IDENTITY,
         ellipse_fill_color,
         None,

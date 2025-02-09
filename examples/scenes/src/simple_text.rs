@@ -1,15 +1,15 @@
-// Copyright 2022 the Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use std::sync::Arc;
 
+use catalina::kurbo::Affine;
+use catalina::peniko::{color::palette, Blob, Brush, BrushRef, Fill, Font, StyleRef};
+use catalina::{Glyph, Scene};
 use skrifa::{
     raw::{FileRef, FontRef},
     MetadataProvider,
 };
-use vello::kurbo::Affine;
-use vello::peniko::{color::palette, Blob, Brush, BrushRef, Fill, Font, StyleRef};
-use vello::{Glyph, Scene};
 
 // This is very much a hack to get things working.
 // On Windows, can set this to "c:\\Windows\\Fonts\\seguiemj.ttf" to get color emoji

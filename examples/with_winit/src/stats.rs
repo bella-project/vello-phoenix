@@ -1,13 +1,13 @@
-// Copyright 2023 the Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
+#[cfg(feature = "wgpu-profiler")]
+use catalina::kurbo::Line;
+use catalina::kurbo::{Affine, PathEl, Rect, Stroke};
+use catalina::peniko::{color::palette, Brush, Color, Fill};
+use catalina::{low_level::BumpAllocators, AaConfig, Scene};
 use scenes::SimpleText;
 use std::collections::VecDeque;
-#[cfg(feature = "wgpu-profiler")]
-use vello::kurbo::Line;
-use vello::kurbo::{Affine, PathEl, Rect, Stroke};
-use vello::peniko::{color::palette, Brush, Color, Fill};
-use vello::{low_level::BumpAllocators, AaConfig, Scene};
 
 #[cfg(all(feature = "wgpu-profiler", not(target_arch = "wasm32")))]
 use std::time::Duration;

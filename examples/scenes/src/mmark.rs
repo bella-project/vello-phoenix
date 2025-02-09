@@ -1,4 +1,4 @@
-// Copyright 2023 the Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 //! A benchmark based on MotionMark 1.2's path benchmark.
@@ -11,11 +11,13 @@
 
 use std::cmp::Ordering;
 
+use catalina::kurbo::{
+    Affine, BezPath, CubicBez, Line, ParamCurve, PathSeg, Point, QuadBez, Stroke,
+};
+use catalina::peniko::Color;
+use catalina::Scene;
 use rand::seq::IndexedRandom;
 use rand::Rng;
-use vello::kurbo::{Affine, BezPath, CubicBez, Line, ParamCurve, PathSeg, Point, QuadBez, Stroke};
-use vello::peniko::Color;
-use vello::Scene;
 
 use crate::{SceneParams, TestScene};
 

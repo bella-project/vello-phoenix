@@ -1,19 +1,12 @@
-use rune::ast;
-use rune::ast::{
-    Ident,
-    ByteIndex,
-    Path,
-    Pat,
-    PatPath,
-    Span,
-    Stmt::{
-        Local,
-    },
-};
-use rune::SourceId;
-use rune::parse::Parser;
-use rune::alloc::Box;
+// Copyright 2022-2025 the Catalina & Vello Authors
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
 use rune::alloc::clone::TryClone;
+use rune::alloc::Box;
+use rune::ast;
+use rune::ast::{Pat, PatPath, Path, Span};
+use rune::parse::Parser;
+use rune::SourceId;
 
 use std::collections::HashMap;
 
@@ -31,12 +24,18 @@ impl CodeGen {
     pub fn new(content: &str, vune_path: &str) -> Self {
         let mut ext_content = HashMap::new();
 
-        ext_content.insert("core::transform".to_string(), include_str!("../core/transform.vune").to_string());
-        ext_content.insert("core::points".to_string(), include_str!("../core/points.vune").to_string());
+        ext_content.insert(
+            "core::transform".to_string(),
+            include_str!("../core/transform.vune").to_string(),
+        );
+        ext_content.insert(
+            "core::points".to_string(),
+            include_str!("../core/points.vune").to_string(),
+        );
 
         Self {
             content: content.to_string(),
-            vune_path: match vune_path != "" {
+            vune_path: match !vune_path.is_empty() {
                 true => Some(vune_path.to_string()),
                 false => None,
             },
@@ -51,7 +50,10 @@ impl CodeGen {
             ast::Stmt::Local(l) => self.codegen_local(l),
             ast::Stmt::Expr(e) => self.codegen_expr(e),
             ast::Stmt::Semi(s) => self.codegen_stmt_semi(s),
-            _ => { dbg!(stmt); todo!() },
+            _ => {
+                dbg!(stmt);
+                todo!()
+            }
         }
     }
 
@@ -70,7 +72,10 @@ impl CodeGen {
             ast::Expr::Call(c) => self.codegen_call(c),
             ast::Expr::Group(g) => self.codegen_group(g),
             ast::Expr::Unary(u) => self.codegen_unary(u),
-            _ => { dbg!(expr); todo!() },
+            _ => {
+                dbg!(expr);
+                todo!()
+            }
         }
     }
 
@@ -81,7 +86,10 @@ impl CodeGen {
     pub fn codegen_unop(&mut self, unop: ast::UnOp) -> String {
         match unop {
             ast::UnOp::Neg(_) => "-".to_string(),
-            _ => { dbg!(unop); todo!() },
+            _ => {
+                dbg!(unop);
+                todo!()
+            }
         }
     }
 
@@ -90,10 +98,11 @@ impl CodeGen {
     }
 
     pub fn codegen_call(&mut self, call: ast::ExprCall) -> String {
-        self.codegen_expr(Box::into_inner(call.expr)).replace("::", "_") + 
-        "(" +
-        &self.codegen_call_args(call.args) +
-        ")"
+        self.codegen_expr(Box::into_inner(call.expr))
+            .replace("::", "_")
+            + "("
+            + &self.codegen_call_args(call.args)
+            + ")"
     }
 
     pub fn codegen_field_access(&mut self, field: ast::ExprFieldAccess) -> String {
@@ -155,15 +164,14 @@ impl CodeGen {
             _ => todo!(),
         }
     }
-    
+
     pub fn codegen_local(&mut self, local: Box<ast::Local>) -> String {
         let local_name = self.codegen_pat(local.pat.try_clone().unwrap());
         let local_expr = self.codegen_expr(local.expr.try_clone().unwrap());
 
         let final_local = if local.mut_token.is_some() {
             "var "
-        }
-        else {
+        } else {
             "let "
         };
 
@@ -211,24 +219,23 @@ impl CodeGen {
     }
 
     pub fn ident_to_str(&mut self, id: ast::Ident, full_name: bool) -> String {
-        let mut result = self.span_to_str(id.span);
-        let mut final_result = String::new();
+        let result = self.span_to_str(id.span);
 
         match full_name {
-            true => { 
-                match self.full_names.get(&result) {
-                    Some(r) => final_result = r.replace("::", "_"),
-                    None => final_result = result,
-                }
-
-                final_result
+            true => match self.full_names.get(&result) {
+                Some(r) => r.replace("::", "_"),
+                None => result,
             },
             false => result,
         }
     }
 
-    pub fn codegen_function(&mut self, function: ast::ItemFn, impl_name: &Option<String>) -> String {
-        let mut function_name = match impl_name {
+    pub fn codegen_function(
+        &mut self,
+        function: ast::ItemFn,
+        impl_name: &Option<String>,
+    ) -> String {
+        let function_name = match impl_name {
             Some(im) => im.replace("::", "_") + "_" + &self.ident_to_str(function.name, true),
             None => self.ident_to_str(function.name, true),
         };
@@ -236,16 +243,21 @@ impl CodeGen {
         let block = self.codegen_block(function.body, 1);
         let args = self.codegen_args(function.args);
 
-        let mut arrow_with_type = if function.output.is_some() {
+        let arrow_with_type = if function.output.is_some() {
             "-> ".to_owned() + &self.codegen_type(function.output.unwrap().1)
-        }
-        else {
+        } else {
             "".to_string()
         };
 
-        "fn ".to_owned() + &function_name + "(" + &args + ") " + &arrow_with_type + " {\n"
-            + &block +
-        "}\n"
+        "fn ".to_owned()
+            + &function_name
+            + "("
+            + &args
+            + ") "
+            + &arrow_with_type
+            + " {\n"
+            + &block
+            + "}\n"
     }
 
     pub fn codegen_args(&mut self, args: ast::Parenthesized<ast::FnArg, ast::Comma>) -> String {
@@ -323,10 +335,10 @@ impl CodeGen {
     }
 
     pub fn codegen_use(&mut self, use_item: ast::ItemUse) -> String {
-        let mut item_path = self.codegen_item_use_path(use_item.path);
+        let item_path = self.codegen_item_use_path(use_item.path);
 
         let cont = self.ext_content.get(&item_path);
-        let sh = VuneShader::new(&cont.unwrap(), &item_path);
+        let sh = VuneShader::new(cont.unwrap(), &item_path);
 
         self.full_names.extend(sh.full_names.clone());
 
@@ -346,15 +358,21 @@ impl CodeGen {
     pub fn codegen_item_use_segment(&mut self, ius: ast::ItemUseSegment) -> String {
         match ius {
             ast::ItemUseSegment::PathSegment(p) => self.codegen_path_segment(p),
-            _ => { dbg!(ius); todo!() },
+            _ => {
+                dbg!(ius);
+                todo!()
+            }
         }
     }
 
     pub fn codegen_path_segment(&mut self, path_seg: ast::PathSegment) -> String {
         match path_seg {
             ast::PathSegment::Ident(i) => self.ident_to_str(i, true),
-            ast::PathSegment::SelfType(s) => self.codegen_self(),
-            _ => { dbg!(path_seg); todo!() },
+            ast::PathSegment::SelfType(_s) => self.codegen_self(),
+            _ => {
+                dbg!(path_seg);
+                todo!()
+            }
         }
     }
 
@@ -379,7 +397,10 @@ impl CodeGen {
             ast::Item::Impl(i) => self.codegen_impl(i),
             ast::Item::Struct(s) => self.codegen_struct(s),
             ast::Item::MacroCall(m) => self.codegen_macro(m),
-            _ => { dbg!(item); todo!() }
+            _ => {
+                dbg!(item);
+                todo!()
+            }
         }
     }
 
@@ -388,17 +409,20 @@ impl CodeGen {
 
         match name {
             "uniform" => self.codegen_uniform(macro_call),
-            _ => { dbg!(macro_call); todo!() },
+            _ => {
+                dbg!(macro_call);
+                todo!()
+            }
         }
     }
 
     pub fn codegen_uniform(&mut self, macro_call: ast::MacroCall) -> String {
         let input_vec: &RuneVec<ast::Token> = macro_call.input.vec();
         let mut numb_vec: RuneVec<ast::Token> = RuneVec::new();
-        numb_vec.try_push(input_vec[0]);
+        let _ = numb_vec.try_push(input_vec[0]);
 
         let mut value_vec: RuneVec<ast::Token> = RuneVec::new();
-        value_vec.try_extend_from_slice(&input_vec[2..input_vec.len()]);
+        let _ = value_vec.try_extend_from_slice(&input_vec[2..input_vec.len()]);
 
         let numb_stream = rune::macros::TokenStream::from(numb_vec);
         let mut numb_parser = Parser::from_token_stream(&numb_stream, macro_call.open.span);
@@ -410,21 +434,29 @@ impl CodeGen {
         let value_ast = value_parser.parse::<ast::Field>().unwrap();
         let value_codegen = self.codegen_field(value_ast);
 
-        "@group(0) @binding(".to_owned() + &numb_codegen + ")\n" +
-        "var<uniform> " + &value_codegen + ";\n"
+        "@group(0) @binding(".to_owned()
+            + &numb_codegen
+            + ")\n"
+            + "var<uniform> "
+            + &value_codegen
+            + ";\n"
     }
 
     pub fn codegen_struct(&mut self, struct_item: ast::ItemStruct) -> String {
         let name = self.ident_to_str(struct_item.ident, false);
 
-        let mut full_name = match &self.vune_path {
+        let full_name = match &self.vune_path {
             Some(p) => p.to_owned() + "::" + &self.ident_to_str(struct_item.ident, false),
             None => self.ident_to_str(struct_item.ident, false),
         };
 
         self.full_names.insert(name, full_name.clone());
 
-        "struct ".to_owned() + &full_name.replace("::", "_") + " {\n" + &self.codegen_fields_body(struct_item.body) + "}\n"
+        "struct ".to_owned()
+            + &full_name.replace("::", "_")
+            + " {\n"
+            + &self.codegen_fields_body(struct_item.body)
+            + "}\n"
     }
 
     pub fn codegen_fields_body(&mut self, fields: ast::Fields) -> String {
@@ -440,8 +472,11 @@ impl CodeGen {
                         None => result += "\n",
                     }
                 }
-            },
-            _ => { dbg!(fields); todo!() },
+            }
+            _ => {
+                dbg!(fields);
+                todo!()
+            }
         }
 
         result
@@ -460,12 +495,14 @@ impl CodeGen {
     pub fn codegen_type(&mut self, ast_type: ast::Type) -> String {
         match ast_type {
             ast::Type::Path(p) => self.codegen_path(p),
-            _ => { dbg!(ast_type); todo!() },
+            _ => {
+                dbg!(ast_type);
+                todo!()
+            }
         }
     }
 
     pub fn codegen_impl(&mut self, impl_ast: ast::ItemImpl) -> String {
-
         let mut result = String::new();
 
         let impl_path = self.codegen_path(impl_ast.path);
@@ -495,29 +532,24 @@ impl CodeGen {
 
 pub struct VuneShader {
     content: String,
-    vune_path: Option<String>,
     pub full_names: HashMap<String, String>,
 }
 
 fn parse_and_codegen(input: &str, codegen: &mut CodeGen) -> (String, HashMap<String, String>) {
     let mut parser = Parser::new(input, SourceId::empty(), false);
 
-    let mut ast = parser.parse_all::<ast::File>().unwrap();
+    let ast = parser.parse_all::<ast::File>().unwrap();
 
     (codegen.codegen_file(ast), codegen.full_names.clone())
 }
 
 impl VuneShader {
     pub fn new(input: &str, vune_path: &str) -> Self {
-        let mut codegen = CodeGen::new(&input, vune_path);
+        let mut codegen = CodeGen::new(input, vune_path);
         let result = parse_and_codegen(input, &mut codegen);
 
         Self {
             content: result.0,
-            vune_path: match vune_path != "" {
-                true => Some(vune_path.to_string()),
-                false => None,
-            },
             full_names: result.1,
         }
     }

@@ -1,4 +1,4 @@
-// Copyright 2022 the Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 //! Winit example.
@@ -17,9 +17,9 @@ use std::collections::HashSet;
 use std::num::NonZeroUsize;
 use std::sync::Arc;
 
+use catalina::low_level::DebugLayers;
 #[cfg(not(target_arch = "wasm32"))]
 use std::time::Instant;
-use vello::low_level::DebugLayers;
 #[cfg(target_arch = "wasm32")]
 use web_time::Instant;
 use winit::application::ApplicationHandler;
@@ -31,18 +31,18 @@ use std::time::Duration;
 #[cfg(all(feature = "wgpu-profiler", target_arch = "wasm32"))]
 use web_time::Duration;
 
+use catalina::kurbo::{Affine, Vec2};
+use catalina::peniko::{color::palette, Color};
+use catalina::util::{RenderContext, RenderSurface};
+use catalina::{low_level::BumpAllocators, AaConfig, Renderer, RendererOptions, Scene};
 use clap::Parser;
 use scenes::{ExampleScene, ImageCache, SceneParams, SceneSet, SimpleText};
-use vello::kurbo::{Affine, Vec2};
-use vello::peniko::{color::palette, Color};
-use vello::util::{RenderContext, RenderSurface};
-use vello::{low_level::BumpAllocators, AaConfig, Renderer, RendererOptions, Scene};
 
 use winit::dpi::LogicalSize;
 use winit::event_loop::EventLoop;
 use winit::window::{Window, WindowAttributes};
 
-use vello::wgpu;
+use catalina::wgpu;
 
 #[cfg(not(any(target_arch = "wasm32", target_os = "android")))]
 mod hot_reload;
@@ -491,7 +491,7 @@ impl ApplicationHandler<UserEvent> for VelloApp<'_> {
                     .or(scene_params.base_color)
                     .unwrap_or(palette::css::BLACK);
                 let antialiasing_method = AA_CONFIGS[self.aa_config_ix as usize];
-                let render_params = vello::RenderParams {
+                let render_params = catalina::RenderParams {
                     base_color,
                     width,
                     height,
@@ -558,7 +558,7 @@ impl ApplicationHandler<UserEvent> for VelloApp<'_> {
                 #[allow(deprecated)]
                 // #[expect(deprecated, reason = "This deprecation is not targeted at us.")] // Our MSRV is too low to use `expect`
                 if self.async_pipeline && cfg!(not(target_arch = "wasm32")) {
-                    self.scene_complexity = vello::util::block_on_wgpu(
+                    self.scene_complexity = catalina::util::block_on_wgpu(
                         &device_handle.device,
                         self.renderers[surface.dev_id]
                             .as_mut()
@@ -965,5 +965,5 @@ fn android_main(app: AndroidApp) {
 fn test_kurbo_schemars_with_peniko() {
     use std::marker::PhantomData;
     #[expect(unused_qualifications)]
-    let _: PhantomData<kurbo::Rect> = PhantomData::<vello::peniko::kurbo::Rect>;
+    let _: PhantomData<kurbo::Rect> = PhantomData::<catalina::peniko::kurbo::Rect>;
 }
