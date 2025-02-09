@@ -63,11 +63,10 @@ fn many_bins(use_cpu: bool) {
 }
 
 // With wgpu 23, this started mysteriously working on macOS (and only on macOS).
-// UPDATE: With wgpu 24, this stopped mysteriously working on Windows (and only on Windows).
+// This crashes on the host Windows machine, but not on the GitHub Actions?????
 #[test]
 #[cfg_attr(skip_gpu_tests, ignore)]
 #[cfg_attr(target_os = "macos", should_panic)]
-#[cfg_attr(target_os = "windows", should_panic)]
 fn many_bins_gpu() {
     many_bins(false);
 }
