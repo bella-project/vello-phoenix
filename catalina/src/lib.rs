@@ -150,11 +150,10 @@ pub use scene::{DrawGlyphs, Scene};
 
 pub use vune;
 
-pub use low_level::{ShaderId, BindType};
+pub use low_level::{BindType, ShaderId};
 #[cfg(feature = "wgpu")]
 use low_level::{
-    BumpAllocators, FullShaders, ImageFormat, ImageProxy, Recording, Render,
-    ResourceProxy,
+    BumpAllocators, FullShaders, ImageFormat, ImageProxy, Recording, Render, ResourceProxy,
 };
 use thiserror::Error;
 
