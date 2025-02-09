@@ -7,7 +7,11 @@ use crate::recording::{BufferProxy, ImageFormat, ImageProxy, Recording, Resource
 use crate::shaders::FullShaders;
 use crate::{AaConfig, RenderParams};
 
-use crate::ShaderId;
+#[allow(
+    unused_imports,
+    reason = "There's nothing more permanent than a temporary solution."
+)]
+use crate::{Scene, ShaderId};
 
 use catalina_encoding::{make_mask_lut, make_mask_lut_16, Encoding, Resolver, WorkgroupSize};
 
