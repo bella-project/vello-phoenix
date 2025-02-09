@@ -6,8 +6,21 @@
 #   -g "!src/special_file.rs"
 #   -g "!src/special_directory"
 
-# Check all the standard Rust source files
-output=$(rg "^// Copyright 2022-2025 the Catalina & Vello Authors$\n^// SPDX-License-Identifier: Apache-2\.0 OR MIT$\n\n" --files-without-match --multiline -g "*.rs" -g "!catalina_shaders/{shader,src/cpu}" .)
+# Check Rust files with egui copyright.
+output=$(rg "^// Copyright 2022-2025 the Catalina, egui & Vello Authors$\n^// SPDX-License-Identifier: Apache-2\.0 OR MIT$\n\n" --files-without-match --multiline -g "examples/with_winit/multi_touch.rs" .)
+
+if [ -n "$output" ]; then
+	echo -e "The following files lack the correct copyright header:\n"
+	echo $output
+	echo -e "\n\nPlease add the following header:\n"
+	echo "// Copyright 2022-2025 the Catalina, egui & Vello Authors"
+	echo "// SPDX-License-Identifier: Apache-2.0 OR MIT"
+	echo -e "\n... rest of the file ...\n"
+	exit 1
+fi
+
+# Check all the standard Rust source files (excepting egui).
+output=$(rg "^// Copyright 2022-2025 the Catalina & Vello Authors$\n^// SPDX-License-Identifier: Apache-2\.0 OR MIT$\n\n" --files-without-match --multiline -g "*.rs" -g "!examples/with_winit/multi_touch.rs" -g "!catalina_shaders/{shader,src/cpu}" .)
 
 if [ -n "$output" ]; then
 	echo -e "The following files lack the correct copyright header:\n"
