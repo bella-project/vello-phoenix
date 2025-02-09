@@ -150,10 +150,10 @@ pub use scene::{DrawGlyphs, Scene};
 
 pub use vune;
 
-pub use low_level::ShaderId;
+pub use low_level::{ShaderId, BindType};
 #[cfg(feature = "wgpu")]
 use low_level::{
-    BindType, BumpAllocators, FullShaders, ImageFormat, ImageProxy, Recording, Render,
+    BumpAllocators, FullShaders, ImageFormat, ImageProxy, Recording, Render,
     ResourceProxy,
 };
 use thiserror::Error;
@@ -171,8 +171,6 @@ use std::{num::NonZeroUsize, sync::atomic::AtomicBool};
 use wgpu::{Device, Queue, SurfaceTexture, TextureFormat, TextureView};
 #[cfg(all(feature = "wgpu", feature = "wgpu-profiler"))]
 use wgpu_profiler::{GpuProfiler, GpuProfilerSettings};
-
-use std::collections::HashMap;
 
 /// Represents the anti-aliasing method to use during a render pass.
 ///
