@@ -171,7 +171,10 @@ use wgpu::{Device, Queue, SurfaceTexture, TextureFormat, TextureView};
 #[cfg(all(feature = "wgpu", feature = "wgpu-profiler"))]
 use wgpu_profiler::{GpuProfiler, GpuProfilerSettings};
 
-#[allow(unused_imports, reason = "There's nothing more permanent than a temporary solution.")]
+#[allow(
+    unused_imports,
+    reason = "There's nothing more permanent than a temporary solution."
+)]
 use hashbrown::HashMap;
 
 /// Represents the anti-aliasing method to use during a render pass.
