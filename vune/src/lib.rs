@@ -1,3 +1,6 @@
+// Copyright 2022-2025 the Catalina & Vello Authors
+// SPDX-License-Identifier: Apache-2.0 OR MIT
+
 use rune::alloc::clone::TryClone;
 use rune::alloc::Box;
 use rune::ast;
