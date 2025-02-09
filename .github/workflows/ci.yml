@@ -11,10 +11,10 @@ env:
   RUST_MIN_VER: "1.82"
   # List of packages that will be checked with the minimum supported Rust version.
   # This should be limited to packages that are intended for publishing.
-  RUST_MIN_VER_PKGS: "-p vello -p vello_encoding -p vello_shaders"
+  RUST_MIN_VER_PKGS: "-p catalina -p catalina_encoding -p catalina_shaders"
   # List of packages that can not target Wasm.
-  # `vello_tests` uses `nv-flip`, which doesn't support Wasm.
-  NO_WASM_PKGS: "--exclude vello_tests --exclude simple_sdl2"
+  # `catalina_tests` uses `nv-flip`, which doesn't support Wasm.
+  NO_WASM_PKGS: "--exclude catalina_tests --exclude simple_sdl2"
 
 
 # Rationale
@@ -168,8 +168,8 @@ jobs:
       with:
         path: .git/lfs
         # The files targeted with git lfs
-        key: vello-lfs-${{ hashFiles('vello_tests/snapshots/*.png') }}
-        restore-keys: vello-lfs-
+        key: catalina-lfs-${{ hashFiles('catalina_tests/snapshots/*.png') }}
+        restore-keys: catalina-lfs-
         enableCrossOsArchive: true
 
     - name: Fetch lfs data
@@ -203,7 +203,7 @@ jobs:
         with:
           path: .git/lfs
           # The files targeted with git lfs
-          key: vello-lfs-${{ hashFiles('vello_tests/snapshots/*.png') }}
+          key: catalina-lfs-${{ hashFiles('catalina_tests/snapshots/*.png') }}
           enableCrossOsArchive: true
   
       - name: Checkout LFS files
@@ -243,21 +243,21 @@ jobs:
         # TODO: Maybe use --release; the CPU shaders are extremely slow when unoptimised
         run: cargo nextest run --workspace --locked --all-features --no-fail-fast
         env:
-          VELLO_CI_GPU_SUPPORT: ${{ matrix.gpu }}
+          catalina_CI_GPU_SUPPORT: ${{ matrix.gpu }}
           # We are experimenting with git lfs, and we don't expect to run out of bandwidth.
           # However, if we do, the tests are designed to be robust against that, if this environment variable is set.
           # If we do run out of bandwidth, uncomment the following line and inform @DJMcNab.
-          # VELLO_SKIP_LFS_SNAPSHOTS: all
+          # catalina_SKIP_LFS_SNAPSHOTS: all
       
       - name: Upload test results due to failure
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: vello-snapshot-tests-${{ matrix.os }}
+          name: catalina-snapshot-tests-${{ matrix.os }}
           path: |
-            vello_tests/snapshots
-            vello_tests/smoke_snapshots
-            vello_tests/comparisons
+            catalina_tests/snapshots
+            catalina_tests/smoke_snapshots
+            catalina_tests/comparisons
 
       - name: cargo test --doc
         run: cargo test --doc --workspace --locked --all-features --no-fail-fast
