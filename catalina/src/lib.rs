@@ -1,4 +1,4 @@
-// Copyright 2022 the Catalina & Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 //! Vello is a 2d graphics rendering engine written in Rust, using [`wgpu`].
