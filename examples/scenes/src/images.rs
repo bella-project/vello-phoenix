@@ -1,4 +1,4 @@
-// Copyright 2023 the Vello Authors
+// Copyright 2022-2025 the Catalina & Vello Authors
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use std::collections::HashMap;
