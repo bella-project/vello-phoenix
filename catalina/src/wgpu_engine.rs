@@ -10,8 +10,8 @@ use catalina_shaders::cpu::CpuBinding;
 
 use wgpu::{
     BindGroup, BindGroupLayout, Buffer, BufferUsages, CommandEncoder, CommandEncoderDescriptor,
-    ComputePipeline, Device, PipelineCompilationOptions, Queue, RenderPipeline, Texture,
-    TextureAspect, TextureUsages, TextureView, TextureViewDimension,
+    ComputePassDescriptor, ComputePipeline, Device, PipelineCompilationOptions, Queue,
+    RenderPipeline, Texture, TextureAspect, TextureUsages, TextureView, TextureViewDimension,
 };
 
 use crate::{
@@ -343,10 +343,7 @@ impl WgpuEngine {
             vertex: wgpu::VertexState {
                 module,
                 entry_point: Some(vertex_main),
-                buffers: vertex_buffer
-                    .as_ref()
-                    .map(core::slice::from_ref)
-                    .unwrap_or_default(),
+                buffers: vertex_buffer.as_slice(),
                 compilation_options: PipelineCompilationOptions::default(),
             },
             fragment: Some(wgpu::FragmentState {
@@ -390,8 +387,8 @@ impl WgpuEngine {
         label: &'static str,
         #[cfg(feature = "wgpu-profiler")] profiler: &mut wgpu_profiler::GpuProfiler,
     ) -> Result<()> {
-        let mut free_bufs: HashSet<ResourceId> = Default::default();
-        let mut free_images: HashSet<ResourceId> = Default::default();
+        let mut free_bufs: HashSet<ResourceId> = HashSet::default();
+        let mut free_images: HashSet<ResourceId> = HashSet::default();
         let mut transient_map = TransientBindMap::new(external_resources);
 
         let mut encoder =
@@ -561,7 +558,8 @@ impl WgpuEngine {
                                 &wgpu_shader.bind_group_layout,
                                 bindings,
                             );
-                            let mut cpass = encoder.begin_compute_pass(&Default::default());
+                            let mut cpass =
+                                encoder.begin_compute_pass(&ComputePassDescriptor::default());
                             #[cfg(feature = "wgpu-profiler")]
                             let query = profiler
                                 .begin_query(shader.label, &mut cpass, device)
@@ -611,7 +609,8 @@ impl WgpuEngine {
                                 queue,
                                 proxy,
                             );
-                            let mut cpass = encoder.begin_compute_pass(&Default::default());
+                            let mut cpass =
+                                encoder.begin_compute_pass(&ComputePassDescriptor::default());
                             #[cfg(feature = "wgpu-profiler")]
                             let query = profiler
                                 .begin_query(shader.label, &mut cpass, device)
