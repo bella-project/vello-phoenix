@@ -10,7 +10,7 @@ use catalina_encoding::BumpAllocatorMemory;
 use catalina_encoding::{Encoding, Glyph, GlyphRun, NormalizedCoord, Patch, Transform};
 use peniko::{
     color::{palette, AlphaColor, DynamicColor, Srgb},
-    kurbo::{Affine, BezPath, Point, Rect, Shape, Stroke, Vec2},
+    kurbo::{Affine, BezPath, Point, Rect, Shape, Stroke, StrokeOpts, Vec2},
     BlendMode, Blob, Brush, BrushRef, Color, ColorStop, ColorStops, ColorStopsSource, Compose,
     Extend, Fill, Font, Gradient, Image, Mix, StyleRef,
 };
@@ -188,6 +188,10 @@ impl Scene {
     }
 
     /// Fills a shape using the specified style and brush.
+    #[expect(
+        single_use_lifetimes,
+        reason = "False positive: https://github.com/rust-lang/rust/issues/129255"
+    )]
     pub fn fill<'b>(
         &mut self,
         style: Fill,
@@ -216,6 +220,10 @@ impl Scene {
     }
 
     /// Strokes a shape using the specified style and brush.
+    #[expect(
+        single_use_lifetimes,
+        reason = "False positive: https://github.com/rust-lang/rust/issues/129255"
+    )]
     pub fn stroke<'b>(
         &mut self,
         style: &Stroke,
@@ -285,7 +293,7 @@ impl Scene {
             let stroked = peniko::kurbo::stroke(
                 shape.path_elements(SHAPE_TOLERANCE),
                 style,
-                &Default::default(),
+                &StrokeOpts::default(),
                 STROKE_TOLERANCE,
             );
             self.fill(Fill::NonZero, transform, brush, brush_transform, &stroked);
