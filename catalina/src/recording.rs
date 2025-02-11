@@ -7,12 +7,15 @@ use std::sync::atomic::{AtomicU64, Ordering};
 use peniko::Image;
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Default)]
+/// A Shader's ID/pointer.
 pub struct ShaderId(pub usize);
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
+/// A Resource's global ID/pointer.
 pub struct ResourceId(pub NonZeroU64);
 
 impl ResourceId {
+    /// Get the next new global ID/Pointer for a new Resource.
     pub fn next() -> Self {
         // We initialize with 1 so that the conversion below succeeds
         static ID_COUNTER: AtomicU64 = AtomicU64::new(1);
@@ -23,14 +26,18 @@ impl ResourceId {
 /// List of [`Command`]s for an engine to execute in order.
 #[derive(Default)]
 pub struct Recording {
+    /// The commands list.
     pub commands: Vec<Command>,
 }
 
 /// Proxy used as a handle to a buffer.
 #[derive(Clone, Copy)]
 pub struct BufferProxy {
+    /// The size of the buffer.
     pub size: u64,
+    /// The global id/pointer of a Resource.
     pub id: ResourceId,
+    /// The buffer's name.
     pub name: &'static str,
 }
 
