@@ -95,7 +95,6 @@
 // but resolving them has been deferred for now.
 // Feel free to send a PR that solves one or more of these.
 // Need to allow instead of expect until Rust 1.83 https://github.com/rust-lang/rust/pull/130025
-#![allow(missing_docs, reason = "We have many as-yet undocumented items.")]
 #![expect(
     missing_debug_implementations,
     unnameable_types,
@@ -120,6 +119,7 @@ mod shaders;
 #[cfg(feature = "wgpu")]
 pub mod util;
 #[cfg(feature = "wgpu")]
+/// The WebGPU Backend, Engine & utilities.
 pub mod wgpu_engine;
 
 pub mod low_level {
@@ -302,6 +302,7 @@ pub enum Error {
 
     #[cfg(feature = "wgpu")]
     #[error("wgpu Error from scope")]
+    #[allow(missing_docs, reason = "TODO: Investigate what is this error for.")]
     WgpuErrorFromScope(#[from] wgpu::Error),
 
     /// Failed to create [`GpuProfiler`].
@@ -342,7 +343,8 @@ pub struct Renderer {
     engine: WgpuEngine,
     resolver: Resolver,
     shaders: FullShaders,
-    pub vune_shaders: HashMap<String, (String, ShaderId)>,
+    /// This is where Vune Shaders are stored internally (In the future, the types are probably going to change).
+    pub vune_shaders: HashMap<String, ShaderId>,
     blit: Option<BlitPipeline>,
     #[cfg(feature = "debug_layers")]
     debug: Option<debug::DebugRenderer>,
@@ -372,8 +374,9 @@ pub struct RenderParams {
     /// pipeline.
     pub base_color: peniko::Color,
 
-    /// Dimensions of the rasterization target
+    /// Width of the rasterization target
     pub width: u32,
+    /// Height of the rasterization target
     pub height: u32,
 
     /// The anti-aliasing algorithm. The selected algorithm must have been initialized while
@@ -456,33 +459,54 @@ impl Renderer {
         })
     }
 
+    /// The reference to the WebGPU Engine that the Renderer is currently using.
     pub fn engine(&self) -> &WgpuEngine {
         &self.engine
     }
 
+    /// The mutable reference to the WebGPU Engine that the Renderer is currently using.
     pub fn engine_mut(&mut self) -> &mut WgpuEngine {
         &mut self.engine
     }
 
+    /// Add & Compile a Vune shader.
+    ///
+    /// # Arguments
+    ///
+    /// * `name` - The name of the Vune Shader, this is used for 
+    ///   searching it into the database without having to use the entire path.
+    ///
+    /// * `content` - The shader's content. For opening files, you can use 
+    ///   [`std::fs::read_to_string`] or [`include_str`].
+    ///
+    /// * `device` - The Renderer's device.
+    ///
+    /// * `layout` - The shader's bindings.
+    ///
     pub fn add_vune_shader(
         &mut self,
         name: &str,
-        path: &str,
+        content: &str,
         device: &Device,
         layout: &[BindType],
     ) {
         let shader = self.engine_mut().add_vune_shader(
             device,
-            vune::VuneShader::new_main_from_file(path),
+            vune::VuneShader::new_main(content),
             layout,
         );
 
         self.vune_shaders
-            .insert(name.to_string(), (path.to_string(), shader));
+            .insert(name.to_string(), shader);
     }
 
+    /// Get the Vune Shader's [`ShaderId`] by searching its name.
+    ///
+    /// # Arguments
+    ///
+    /// * `name` - The name of the Vune Shader previously set with [`add_vune_shader`].
     pub fn get_vune_shader(&mut self, name: &str) -> ShaderId {
-        self.vune_shaders.get(name).unwrap().1
+        *self.vune_shaders.get(name).unwrap()
     }
 
     /// Renders a scene to the target texture.
@@ -502,7 +526,6 @@ impl Renderer {
             scene,
             &mut self.resolver,
             &self.shaders,
-            &scene.flatten_shader,
             params,
         );
         let external_resources = [ExternalResource::Image(
@@ -728,10 +751,9 @@ impl Renderer {
         // counts are used for debug visualiation.
         let robust = cfg!(feature = "debug_layers");
         let recording = render.render_encoding_coarse(
-            encoding,
+            scene,
             &mut self.resolver,
             &self.shaders,
-            &scene.flatten_shader,
             params,
             robust,
         );
@@ -915,10 +937,16 @@ impl Renderer {
 }
 
 #[cfg(feature = "wgpu")]
+/// A cross-backend representation of a Target Texture.
+/// At the moment, this works a utility to create new textures easily in WebGPU.
 pub struct TargetTexture {
+    /// The WebGPU `TextureView`.
     view: TextureView,
+    /// The texture's width.
     width: u32,
+    /// The texture's height.
     height: u32,
+    /// The texture's file format.
     format: TextureFormat,
 }
 
