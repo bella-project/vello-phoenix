@@ -145,10 +145,9 @@ pub(crate) fn render_full(
     scene: &Scene,
     resolver: &mut Resolver,
     shaders: &FullShaders,
-    flatten: &WgpuVune,
     params: &RenderParams,
 ) -> (Recording, ResourceProxy) {
-    render_encoding_full(scene.encoding(), resolver, shaders, flatten, params)
+    render_encoding_full(scene, resolver, shaders, params)
 }
 
 #[cfg(feature = "wgpu")]
@@ -157,15 +156,14 @@ pub(crate) fn render_full(
 /// This function is not recommended when the scene can be complex, as it does not
 /// implement robust dynamic memory.
 pub(crate) fn render_encoding_full(
-    encoding: &Encoding,
+    scene: &Scene,
     resolver: &mut Resolver,
     shaders: &FullShaders,
-    flatten: &WgpuVune,
     params: &RenderParams,
 ) -> (Recording, ResourceProxy) {
     let mut render = Render::new();
     let mut recording =
-        render.render_encoding_coarse(encoding, resolver, shaders, flatten, params, false);
+        render.render_encoding_coarse(scene, resolver, shaders, params, false);
     let out_image = render.out_image();
     render.record_fine(shaders, &mut recording);
     (recording, out_image.into())
@@ -194,10 +192,9 @@ impl Render {
     /// of the atomic bump buffer, for robust dynamic memory.
     pub fn render_encoding_coarse(
         &mut self,
-        encoding: &Encoding,
+        scene: &Scene,
         resolver: &mut Resolver,
         shaders: &FullShaders,
-        flatten: &WgpuVune,
         params: &RenderParams,
         robust: bool,
     ) -> Recording {
@@ -205,7 +202,7 @@ impl Render {
         let mut recording = Recording::default();
         let mut packed = vec![];
 
-        let (layout, ramps, images) = resolver.resolve(encoding, &mut packed);
+        let (layout, ramps, images) = resolver.resolve(scene.encoding(), &mut packed);
         let gradient_image = if ramps.height == 0 {
             ResourceProxy::new_image(1, 1, ImageFormat::Rgba8)
         } else {
@@ -355,8 +352,8 @@ impl Render {
             lines_buf,
         ]);
 
-        if flatten.id.is_some() {
-            for i in &flatten.data {
+        if scene.flatten_shader.id.is_some() {
+            for i in &scene.flatten_shader.data {
                 if matches!(i, WgpuVuneData::Empty) {
                     continue;
                 }
@@ -366,7 +363,7 @@ impl Render {
         }
 
         recording.dispatch(
-            match flatten.id {
+            match scene.flatten_shader.id {
                 Some(f) => f,
                 None => shaders.flatten,
             },

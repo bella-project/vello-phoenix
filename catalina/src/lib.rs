@@ -526,7 +526,6 @@ impl Renderer {
             scene,
             &mut self.resolver,
             &self.shaders,
-            &scene.flatten_shader,
             params,
         );
         let external_resources = [ExternalResource::Image(
@@ -752,10 +751,9 @@ impl Renderer {
         // counts are used for debug visualiation.
         let robust = cfg!(feature = "debug_layers");
         let recording = render.render_encoding_coarse(
-            encoding,
+            scene,
             &mut self.resolver,
             &self.shaders,
-            &scene.flatten_shader,
             params,
             robust,
         );
